@@ -1,0 +1,33 @@
+{
+    "name": "pevn-be",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon app.js",
+        "babel": "nodemon app.js --exec babel-node",
+        "devo": "nodemon  --exec npx babel-node app.js",
+        "start": "babel-node app.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@babel/cli": "^7.18.10",
+        "@babel/core": "^7.18.10",
+        "@babel/node": "^7.18.10",
+        "@babel/preset-env": "^7.18.10",
+        "cloudinary": "^1.22.0",
+        "connect-history-api-fallback": "^1.6.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "express-fileupload": "^1.1.9",
+        "luxon": "^2.4.0",
+        "morgan": "^1.10.0",
+        "node-wifi-scanner": "^1.1.2-np",
+        "pg": "^8.2.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.4"
+    }
+}
