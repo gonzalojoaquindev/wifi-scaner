@@ -15,37 +15,62 @@ const scanner = require('node-wifi-scanner');
 }, 2000) */
 
 const ap = {};
-let redes = null
+let redes = []
+let date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000
+).toISOString()
 
-ap.create = (req, res) => {
-    console.log('request ', req.body)
-    const { date } = req.body
-    console.log('guardando escaner realizado en ', date)
+ap.create = () => {
+    date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000
+    ).toISOString();
+
+    console.log('guardando escaner realizado en ', date);
     scanner.scan((err, networks) => {
         if (err) {
             console.error(err);
             return;
         }
         redes = networks
-        /* console.log("dentro ", redes) */
+
         redes.forEach(element => {
             const { ssid, mac, rssi, channel } = element
-            /*  console.log(ssid); */
-            try {
 
+            try {
                 pool.query(
                     "INSERT INTO scan (ssid, mac, rssi, channel, date ) VALUES ($1, $2, $3, $4, $5)", [ssid, mac, rssi, channel, date]
                 );
 
             } catch (error) {
-                res.status(500).json({ message: 'ocurrió un error' })
+                re.status(500).json({ message: 'ocurrió un error' })
                 console.log(error)
             }
+
+
         });
+        console.log('guardardo correctamente')
+
+
     });
+
 }
 
 
+ap.escanear = () => {
+
+    scanner.scan((err, networks) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        redes = networks
+    })
+}
+
+
+ap.prueba2 = async () => {
+    console.log("ejecutando guardar, intentando leer")
+    ap.escanear()
+    console.log(redes)
+}
 
 
 
@@ -67,26 +92,15 @@ ap.create = (req, res) => {
 
 } */
 
-/* 
-ap.read = async (req, res) => {
 
-    try {
-        const scan = await (await pool.query("select inventary.name, scan.ssid, scan.mac, scan.rssi, scan.channel from scan inner join inventary on inventary.mac = scan.mac")).rows;
-        res.status(200).json({ message: "Escaneando con nombre", scan })
 
-    } catch (error) {
-        res.status(500).json({ message: 'ocurrió un error' })
-    }
-} */
 
 ap.prueba = async (req, res) => {
-    const { date } = req.body
-    console.log('probando')
+    console.log('probando con fecha: ', date)
     try {
         const lastScan = await (await pool.query("SELECT inventary.name, scan.ssid, scan.mac, scan.rssi, scan.channel FROM scan LEFT JOIN inventary ON inventary.mac = scan.mac WHERE date=$1", [date])).rows;
-        console.log(lastScan)
+        console.log('Leyendo utlimo escaneo', lastScan);
         res.status(200).json({ message: "Leyendo ultimo scaneo de redes", lastScan })
-
     } catch (error) {
         res.status(500).json({ message: 'ocurrió un error' })
     }
@@ -103,6 +117,7 @@ ap.read = async (req, res) => {
             }
             console.log(networks);
             const scan = networks
+            redes = networks
             res.status(200).json({ message: "scaneando", scan })
         });
 

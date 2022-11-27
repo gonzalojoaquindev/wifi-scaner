@@ -14,6 +14,10 @@
         <v-icon dark> mdi-play </v-icon>
         Prueba
       </v-btn>
+      <v-btn class="mx-2" dark color="indigo" @click="prueba2()">
+        <v-icon dark> mdi-play </v-icon>
+        Prueba 2
+      </v-btn>
       {{ scanToAdd.date }}
 
       <v-data-table
@@ -89,7 +93,21 @@ export default {
         const res = await this.axios.post(`/ap/prueba`, this.scanToAdd);
         console.log("respuesta: ", res);
         this.scanList = res.data.lastScan;
-        /*   this.scanList.push(res.data.scan); */
+        console.log("Escaneo: ", this.scanList);
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+    },
+    async prueba2() {
+      try {
+        console.log("ejecutando prueba 2");
+        setTimeout(() => {
+          console.log("hola");
+        }, 1000);
+        const res = await this.axios.post(`/ap/prueba2`, this.scanToAdd);
+
+        console.log("respuesta: ", res);
+        this.scanList = res.data.lastScan;
         console.log("Escaneo: ", this.scanList);
       } catch (error) {
         console.log("Error: ", error);
@@ -97,17 +115,17 @@ export default {
     },
 
     async add() {
-      /*  this.pm03ToAdd.create_by_id = this.user.id;
-      console.log(this.pm03ToAdd); */
       try {
-        this.scanToAdd.date = new Date(
-          Date.now() - new Date().getTimezoneOffset() * 60000
-        ).toISOString();
         console.log("intentando escanear");
-        const res = await this.axios.post("/ap/create", this.scanToAdd);
-        console.log("Guardado");
-        this.prueba();
-
+        console.log("Guardando en base de datos");
+        setTimeout(() => {
+          this.prueba();
+        }, 1000);
+        this.axios.post(`/ap/create`);
+        console.log("Guardando correctamente", re);
+        const res = await this.axios.post(`/ap/prueba`, this.scanToAdd);
+        console.log("respuesta: ", res);
+        console.log("aprobo");
         /*  const res = await this.axios.post("/pm03/create", this.pm03ToAdd);
         
         this.pm03List.push(res.data.pm03);
@@ -118,8 +136,6 @@ export default {
           type: "success",
           message: res.data.message,
         }; */
-
-        console.log("aprobo");
       } catch (error) {
         console.log(error);
       }

@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/create", ap.create);
 router.get('/read', ap.read);
 router.post('/prueba', ap.prueba);
+router.post('/prueba2', ap.prueba2);
 router.put('/update/:id', ap.update);
 router.delete('/delete/:id', ap.delete);
 router.post('/my-ap', ap.getap);
